@@ -59,14 +59,18 @@ nums.forEach(function(button) {
 ops.forEach(function(button) {
     button.addEventListener('click', function() {
         operator = this.textContent;
-        displayValue = a;
+        a = parseInt(displayValue);
+        console.log(a);
+        console.log(operator);
         // console.log(`You clicked ${this.textContent}`);
     });
 });
 
 equal.addEventListener('click', function() {
-    displayValue = b;
+    b = parseInt(displayValue);
+    console.log(b);
     operate(a, operator, b);
+    console.log(solution);
 });
 
 clear.addEventListener('click', function() {
