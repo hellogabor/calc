@@ -1,6 +1,8 @@
-let a
-let b
-let operator
+let a;
+let b;
+let operator;
+
+// basic calculator functions
 
 const add = function(a, b) {
 	return a + b;
@@ -22,13 +24,53 @@ const divide = function(a, b) {
     }
 };
 
+let solution;
+
 const operate = function(a, operator, b) {
     if (operator == '+') {
-        return add(a, b);
+        solution = add(a, b);
     } else if (operator == '-') {
-        return subtract(a, b);
+        solution = subtract(a, b);
     } else if (operator == '*') {
-        return multiply(a, b);
+        solution = multiply(a, b);
     } else if (operator == '/') {
-        return divide(a, b);
+        solution = divide(a, b);
+    }
+    display.innerHTML = solution;
 }
+
+// DOM stuff
+
+let nums = document.querySelectorAll('.btn-number');
+let ops = document.querySelectorAll('.btn-operator');
+let equal = document.querySelector('.btn-equals');
+let clear = document.querySelector('.btn-clear');
+let display = document.querySelector('#display');
+let displayValue;
+
+nums.forEach(function(button) {
+    button.addEventListener('click', function() {
+        display.innerHTML += this.textContent;
+        displayValue = this.textContent;
+        // console.log(`You clicked ${this.textContent}`);
+    });
+});
+
+ops.forEach(function(button) {
+    button.addEventListener('click', function() {
+        operator = this.textContent;
+        displayValue = a;
+        // console.log(`You clicked ${this.textContent}`);
+    });
+});
+
+equal.addEventListener('click', function() {
+    displayValue = b;
+    operate(a, operator, b);
+});
+
+clear.addEventListener('click', function() {
+    display.innerHTML = '';
+    a = 0;
+    b = 0;
+});
