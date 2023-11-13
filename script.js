@@ -46,15 +46,29 @@ let ops = document.querySelectorAll('.btn-operator');
 let equal = document.querySelector('.btn-equals');
 let clear = document.querySelector('.btn-clear');
 let display = document.querySelector('#display');
-let displayValue;
+let displayValue = '';
+let lastKeyPress = 'number';
 
 nums.forEach(function(button) {
     button.addEventListener('click', function() {
-        display.innerHTML += this.textContent;
-        displayValue = this.textContent;
+        if (lastKeyPress == 'number') {
+            display.innerHTML += this.textContent;
+            displayValue = display.innerHTML;
+            lastKeyPress = 'number';
+        } else if (lastKeyPress == 'operator') {
+            display.innerHTML = '';
+            display.innerHTML += this.textContent;
+            displayValue = display.innerHTML;
+            lastKeyPress = 'number';
+        } else {
+            display.innerHTML += this.textContent;
+            displayValue = display.innerHTML;
+            lastKeyPress = 'number'; 
+        }
+        });
         // console.log(`You clicked ${this.textContent}`);
-    });
 });
+
 
 ops.forEach(function(button) {
     button.addEventListener('click', function() {
@@ -62,6 +76,7 @@ ops.forEach(function(button) {
         a = parseInt(displayValue);
         console.log(a);
         console.log(operator);
+        lastKeyPress = 'operator';
         // console.log(`You clicked ${this.textContent}`);
     });
 });
