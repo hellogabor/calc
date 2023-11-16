@@ -34,7 +34,6 @@ const operate = function(a, operator, b) {
         result = multiply(a, b);
     } else if (operator == '/') {
         result = divide(a, b);
-        console.log(result);
     }
     // display.innerText = result;
 }
@@ -83,12 +82,12 @@ ops.forEach(function(button) {
                 b = parseFloat(display.textContent);
                 operator = this.textContent;
                 operate(a, operator, b);
-                display.textContent = parseFloat(result.toFixed(15));
+                display.textContent = trueResult();
                 a = null;
             } else if (b !== null) {
                 b = parseFloat(display.textContent);
                 operate(result, operator, b);
-                display.textContent = parseFloat(result.toFixed(15));
+                display.textContent = trueResult();
                 operator = this.textContent;
             }
         }
@@ -100,7 +99,7 @@ equal.addEventListener('click', function() {
     if ((result == null)) {
         b = parseFloat(display.textContent);
         operate(a, operator, b);
-        display.textContent = parseFloat(result.toFixed(15));
+        display.textContent = trueResult();
         console.log(result);
         a = null;
         b = null;
@@ -109,7 +108,7 @@ equal.addEventListener('click', function() {
     } else {
         b = parseFloat(display.textContent);
         operate(result, operator, b);
-        display.textContent = parseFloat(result.toFixed(15));
+        display.textContent = trueResult();
         a = null;
         b = null;
         operator = null;
@@ -125,3 +124,11 @@ clear.addEventListener('click', function() {
     operator = null;
     result = null;
 });
+
+function trueResult() {
+    if (result == 'ERROR') {
+        return 'ERROR';
+    } else {
+        return parseFloat(result.toFixed(15));
+    }
+}
