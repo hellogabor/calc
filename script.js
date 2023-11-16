@@ -45,17 +45,25 @@ let ops = document.querySelectorAll('.btn-operator');
 let equal = document.querySelector('.btn-equals');
 let clear = document.querySelector('.btn-clear');
 let display = document.querySelector('#display');
-let displayValue = null;
 let lastKeyPress = null;
 
 nums.forEach(function(button) {
     button.addEventListener('click', function() {
-        if (lastKeyPress == 'operator') {
+        if ((lastKeyPress == 'operator') || (lastKeyPress == 'equal')) {
             display.textContent = '';
-            display.textContent += this.textContent;
-            lastKeyPress = 'number';
+            if (display.textContent.length < 16) {
+                display.textContent += this.textContent;
+                lastKeyPress = 'number';
+            } else {
+                lastKeyPress = 'number';
+            }
         } else {
-            display.textContent += this.textContent;
+            if (display.textContent.length < 16) {
+                display.textContent += this.textContent;
+                lastKeyPress = 'number';
+            } else {
+                lastKeyPress = 'number';
+            }
             lastKeyPress = 'number';
         }
         });
@@ -68,18 +76,18 @@ ops.forEach(function(button) {
             operator = this.textContent;
         } else {
             if ((result == null) && (a == null)) {
-                a = parseInt(display.textContent);
+                a = parseFloat(display.textContent);
                 operator = this.textContent;
             } else if (a !== null) {
-                b = parseInt(display.textContent);
+                b = parseFloat(display.textContent);
                 operator = this.textContent;
                 operate(a, operator, b);
-                display.textContent = result;
+                display.textContent = parseFloat(result.toFixed(15));
                 a = null;
             } else if (b !== null) {
-                b = parseInt(display.textContent);
+                b = parseFloat(display.textContent);
                 operate(result, operator, b);
-                display.textContent = result;
+                display.textContent = parseFloat(result.toFixed(15));
                 operator = this.textContent;
             }
         }
@@ -88,15 +96,30 @@ ops.forEach(function(button) {
 });
 
 equal.addEventListener('click', function() {
-    b = parseFloat(displayValue);
-    console.log(b);
-    operate(a, operator, b);
-    console.log(result);
+    if (result == null)  {
+        b = parseFloat(display.textContent);
+        operate(a, operator, b);
+        display.textContent = parseFloat(result.toFixed(15));
+        a = null;
+        b = null;
+        operator = null;
+        result = null;
+    } else {
+        b = parseFloat(display.textContent);
+        operate(result, operator, b);
+        display.textContent = parseFloat(result.toFixed(15));
+        a = null;
+        b = null;
+        operator = null;
+        result = null;
+    }
+    lastKeyPress = 'equal';
 });
 
 clear.addEventListener('click', function() {
-    display.innerHTML = '';
+    display.textContent = '';
     a = null;
     b = null;
     operator = null;
+    result = null;
 });

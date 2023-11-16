@@ -46,3 +46,7 @@ button{
   .btn-clear {
      background-color:crimson;
   }
+
+  .btn-number.dot, .btn-number.zero {
+    flex-basis: 12.5%;
+}
