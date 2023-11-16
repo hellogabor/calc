@@ -1,6 +1,7 @@
-let a;
-let b;
-let operator;
+let a = null;
+let b = null;
+let operator = null;
+let result = null;
 
 // basic calculator functions
 
@@ -24,19 +25,17 @@ const divide = function(a, b) {
     }
 };
 
-let solution;
-
 const operate = function(a, operator, b) {
     if (operator == '+') {
-        solution = add(a, b);
+        result = add(a, b);
     } else if (operator == '-') {
-        solution = subtract(a, b);
-    } else if (operator == '*') {
-        solution = multiply(a, b);
+        result = subtract(a, b);
+    } else if (operator == 'x') {
+        result = multiply(a, b);
     } else if (operator == '/') {
-        solution = divide(a, b);
+        result = divide(a, b);
     }
-    display.innerHTML = solution;
+    // display.innerText = result;
 }
 
 // DOM stuff
@@ -46,50 +45,58 @@ let ops = document.querySelectorAll('.btn-operator');
 let equal = document.querySelector('.btn-equals');
 let clear = document.querySelector('.btn-clear');
 let display = document.querySelector('#display');
-let displayValue = '';
-let lastKeyPress = 'number';
+let displayValue = null;
+let lastKeyPress = null;
 
 nums.forEach(function(button) {
     button.addEventListener('click', function() {
-        if (lastKeyPress == 'number') {
-            display.innerHTML += this.textContent;
-            displayValue = display.innerHTML;
-            lastKeyPress = 'number';
-        } else if (lastKeyPress == 'operator') {
-            display.innerHTML = '';
-            display.innerHTML += this.textContent;
-            displayValue = display.innerHTML;
+        if (lastKeyPress == 'operator') {
+            display.textContent = '';
+            display.textContent += this.textContent;
             lastKeyPress = 'number';
         } else {
-            display.innerHTML += this.textContent;
-            displayValue = display.innerHTML;
-            lastKeyPress = 'number'; 
+            display.textContent += this.textContent;
+            lastKeyPress = 'number';
         }
         });
         // console.log(`You clicked ${this.textContent}`);
 });
 
-
 ops.forEach(function(button) {
     button.addEventListener('click', function() {
-        operator = this.textContent;
-        a = parseInt(displayValue);
-        console.log(a);
-        console.log(operator);
+        if (lastKeyPress == 'operator') {
+            operator = this.textContent;
+        } else {
+            if ((result == null) && (a == null)) {
+                a = parseInt(display.textContent);
+                operator = this.textContent;
+            } else if (a !== null) {
+                b = parseInt(display.textContent);
+                operator = this.textContent;
+                operate(a, operator, b);
+                display.textContent = result;
+                a = null;
+            } else if (b !== null) {
+                b = parseInt(display.textContent);
+                operate(result, operator, b);
+                display.textContent = result;
+                operator = this.textContent;
+            }
+        }
         lastKeyPress = 'operator';
-        // console.log(`You clicked ${this.textContent}`);
-    });
+        });
 });
 
 equal.addEventListener('click', function() {
-    b = parseInt(displayValue);
+    b = parseFloat(displayValue);
     console.log(b);
     operate(a, operator, b);
-    console.log(solution);
+    console.log(result);
 });
 
 clear.addEventListener('click', function() {
     display.innerHTML = '';
-    a = 0;
-    b = 0;
+    a = null;
+    b = null;
+    operator = null;
 });
