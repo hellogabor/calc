@@ -34,6 +34,7 @@ const operate = function(a, operator, b) {
         result = multiply(a, b);
     } else if (operator == '/') {
         result = divide(a, b);
+        console.log(result);
     }
     // display.innerText = result;
 }
@@ -96,10 +97,11 @@ ops.forEach(function(button) {
 });
 
 equal.addEventListener('click', function() {
-    if (result == null)  {
+    if ((result == null)) {
         b = parseFloat(display.textContent);
         operate(a, operator, b);
         display.textContent = parseFloat(result.toFixed(15));
+        console.log(result);
         a = null;
         b = null;
         operator = null;
